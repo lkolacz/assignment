@@ -1,3 +1,39 @@
+# The assignment 
+This is the solution for a given task.
+
+## How to run server by script:
+Just execute sript called `start_script.sh`
+
+## How to run everything manually: 
+First You need to build the image:
+    `docker build . -t qredo`
+Secondly You should run the image:
+    `docker run --name leszek -p 8000:8000/tcp -it qredo:latest`
+
+Now System is avaiable on domain:
+    `localhost:8000`
+
+To create a real user (superuser) use below command:
+    `docker exec -it leszek python manage.py createsuperuser`
+
+Now You be able to get Your token by your credentials that you have just created:
+```
+MacBook-Pro-Leszek:PycharmProjects leszek.kolacz$ curl --header "Content-Type: application/json" --request POST \
+--data '{"username":"admin","password":"admin"}' localhost:8000/auth
+
+{"refresh":"x.y.z","access":"a.b.c"}
+MacBook-Pro-Leszek:PycharmProjects leszek.kolacz$ 
+```
+
+Since you have token (var called access), you can play with /sum endpoint:
+```
+MacBook-Pro-Leszek:PycharmProjects leszek.kolacz$ curl localhost:8000/sum -i -H "Authorization:Bearer x.y.z" \ 
+-H "Accept: application/json" --request POST -d '{"a": [1,2,"asa", -4],"b":5}'
+
+{"SHA256_hash_of_the_sum":"df3f619804a92fdb4057192dc43dd748ea778adc52bc498ce80524c014b81119"}
+MacBook-Pro-Leszek:PycharmProjects leszek.kolacz$ 
+```
+
 # Coding Assignment
 The goal of this assignment is to build a simple HTTP service and corresponding client library.
 
